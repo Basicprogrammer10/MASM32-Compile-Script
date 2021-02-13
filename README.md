@@ -7,3 +7,6 @@ Help Test `.\Compile.bat`
 
 ![](https://i.imgur.com/gbbQsm4.png)
 Running the script with test.asm `.\Compile.bat .\test.asm true`
+
+![](https://i.imgur.com/wFjE39N.png)
+C O D E
