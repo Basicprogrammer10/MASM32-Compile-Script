@@ -4,7 +4,7 @@ Rem Set Vars:
 set toCompile=%1
 set doRun=%2
 set masmLoc=%3
-set version=0.7
+set version=0.8
 cls
 
 Rem OnRun Stuff:
@@ -15,12 +15,14 @@ if "%masmLoc%"  =="" call :DefultInstallDir
 Rem Compile:
 echo [36m[*] STARTING COMPILE[35m
 %masmLoc%\bin\ml /c /Zd /coff %toCompile%
+if errorlevel 1 call :Fail COMPILE
 echo [32m[*] COMPILE COMPLETE[0m
 
 Rem Linking:
-echo [36m[*] STARTING LINKINGE[35m
+echo [36m[*] STARTING LINKING[35m
 %masmLoc%\bin\link /SUBSYSTEM:CONSOLE %toCompile:~0,-4%.obj
-echo [32m[*] LINKINGE COMPLETE[0m
+if errorlevel 1 call :Fail LINKING
+echo [32m[*] LINKING COMPLETE[0m
 
 Rem Running:
 if "%doRun%"  =="true" call :RunExe
@@ -38,6 +40,10 @@ echo [36m[*] RUNNING[35m
 echo.
 echo [32m[*] FINISHED RUNNING[0m
 GOTO :END
+
+:Fail
+echo [31m[*] %~1 FAILED[0m
+EXIT
 
 :HelpPage
 echo [44m########## HELP ##########[0m
