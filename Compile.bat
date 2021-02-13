@@ -14,12 +14,14 @@ if "%masmLoc%"  =="" call :DefultInstallDir
 
 Rem Compile:
 echo [36m[*] STARTING COMPILE[35m
+call :DelIfIs %toCompile:~0,-4%.obj
 %masmLoc%\bin\ml /c /Zd /coff %toCompile%
 if errorlevel 1 call :Fail COMPILE
 echo [32m[*] COMPILE COMPLETE[0m
 
 Rem Linking:
 echo [36m[*] STARTING LINKING[35m
+call :DelIfIs %toCompile:~0,-4%.exe
 %masmLoc%\bin\link /SUBSYSTEM:CONSOLE %toCompile:~0,-4%.obj
 if errorlevel 1 call :Fail LINKING
 echo [32m[*] LINKING COMPLETE[0m
@@ -38,8 +40,13 @@ GOTO :END
 echo [36m[*] RUNNING[35m
 %toCompile:~0,-4%.exe
 echo.
-echo [32m[*] FINISHED RUNNING[0m
+echo [32m[*] FINISHED RUNNING[0m 
+echo [35m[*] RETURNED:[0m [36m%errorlevel%[0m
 GOTO :END
+
+:DelIfIs
+IF EXIST %~1 DEL /F %~1
+GOTO :End
 
 :Fail
 echo [31m[*] %~1 FAILED[0m
